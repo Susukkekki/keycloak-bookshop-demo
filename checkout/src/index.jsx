@@ -8,6 +8,7 @@ const kc = new Keycloak({
 	// flow: 'implicit',
 	url: 'http://keycloak:8080/',
 	realm: 'bookshop',
+	// clientId: 'shop'	
 	clientId: 'checkout'	
 });
 
@@ -20,21 +21,22 @@ const kc = new Keycloak({
 
 // HTTP
 
-// axios.defaults.baseURL = 'http://localhost:8083';
-// axios.interceptors.request.use((config) =>
-// 	kc.updateToken(5)
-// 		.then(() => {
-// 			config.headers.Authorization = `Bearer ${kc.token}`;
-// 			return Promise.resolve(config);
-// 		})
-// 		.catch(kc.login)
-// );
+axios.defaults.baseURL = 'http://keycloak:8083';
+axios.interceptors.request.use((config) =>
+	kc.updateToken(5)
+		.then(() => {
+			config.headers.Authorization = `Bearer ${kc.token}`;
+			return Promise.resolve(config);
+		})
+		.catch(kc.login)
+);
 
 
 // APP
 
 kc.init({
-	onLoad: 'login-required',
+	// onLoad: 'check-sso',	
+	onLoad: 'login-required',	
 	// useNonce: true,
 	// // pkceMethod: 'S256',
 	// enableLogging: true,
@@ -43,6 +45,7 @@ kc.init({
 	.then((authenticated) => {
 		if (!authenticated) {
 			console.log("user is not authenticated..!");
+			// kc.login()
 		} else {
 			console.log("user is authenticated..!");
 			createRoot(document.getElementById("app")).render(<Checkout kc={kc}/>)
