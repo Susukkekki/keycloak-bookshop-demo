@@ -26,7 +26,7 @@ const Checkout = ({ kc }) => {
 					<img src="/smile.jpg" style={{ height: 70 }} alt="Smile"/>
 					<h1>Smiling Bookshop Checkout</h1>
 					<ul>
-						<li><a href="//localhost:8081/shop">Back to shop</a></li>
+						<li><a href="//keycloak:8081/shop">Back to shop</a></li>
 						<li>{kc.tokenParsed?.preferred_username}</li>
 						<li><a href="#" onClick={() => kc.logout()}>Logout</a></li>
 					</ul>
